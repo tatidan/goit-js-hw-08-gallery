@@ -63,3 +63,96 @@ const galleryItems = [
     description: 'Lighthouse Coast Sea',
   },
 ];
+
+
+/*==Создание и рендер разметки по массиву данных galleryItems
+===============из app.js и предоставленному шаблону.=====*/
+
+const galleryNode = document.querySelector('.js-gallery');
+const gallerySet = createGallerySet(galleryItems);
+
+function createGallerySet(galleryItems) {
+  return galleryItems.map(({ preview, original, description }) => {
+    console.log({ preview, original, description });
+    console.log(`${ preview }`);
+      return `
+      <li class="gallery__item">
+        <a class="gallery__link"
+            href="${ original }"
+        >
+          <img class="gallery__image"
+            src="${ preview }"
+            data-source="${ original }"
+            alt="${ description }"
+          />
+        </a>
+      </li>
+      `;
+    }).join('');
+};
+
+galleryNode.insertAdjacentHTML('beforeend', gallerySet);
+
+//не забыть убрать буллиты
+
+
+/*=======Реализация делегирования на галерее ul.js-gallery 
+===============и получение url большого изображения.=====*/
+
+galleryNode.addEventListener('click', onGalleryItemClick);
+
+function onGalleryItemClick(event) {
+//
+// //делегирование на галерее ul.js-gallery
+//   
+
+// //тут какая-то проверка на правильность, типа
+//   const isOriginalUrl = event.target.classList.contains('что здесь, original?');
+//   if (!isOriginalUrl) {
+//     return;
+//   }
+  
+// //тут получение url большого изображения.
+//   img.dataset.source="${ original }"
+  
+  
+/*=======Открытие модального окна по клику на элементе галереи=====*/
+  
+  const modalNode = document.querySelector('.lightbox');
+  modalNode.classList.add('is-open');
+
+/*=======Подмена значения атрибута src элемента img.lightbox\*\*image.===*/
+
+//   img.src=img.lightbox\*\*image.
+  
+// // тут доступ к открытому изображению
+//   const currentOpenImg = document.querySelector('lightbox.is-open');
+//   if (currentOpenImg) {
+//     currentOpenImg.classList.remove('is-open');
+//   }
+
+//   const child = event.target;
+// const parentListener = child.closest('кто здесь?')
+//   parentListener.classList.add('is-open');
+}
+
+
+/*=======Закрытие модального окна по клику на кнопку button=====*/
+
+const closeBtnRef = document.querySelector('button[data-action="close-lightbox"]');
+closeBtnRef.addEventListener('click', onClickModalClose);
+
+function onClickModalClose(event) {
+  
+ }
+
+/*=====Очистка значения атрибута src элемента img.lightbox\*\*image.====*/
+
+
+
+/*=====Закрытие модального окна по клику на div.lightbox\_\_overlay.====*/
+
+/*=====Закрытие модального окна по нажатию клавиши ESC.=================*/
+
+/*============Пролистывание изображений галереи в открытом модальном окне 
+==============================клавишами "влево" и "вправо".=============*/
