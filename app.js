@@ -64,7 +64,6 @@ const galleryItems = [
   },
 ];
 
-
 /*==Создание и рендер разметки по массиву данных galleryItems
 ===============из app.js и предоставленному шаблону.=====*/
 
@@ -73,8 +72,6 @@ const gallerySet = createGallerySet(galleryItems);
 
 function createGallerySet(galleryItems) {
   return galleryItems.map(({ preview, original, description }) => {
-    console.log({ preview, original, description });
-    console.log(`${ preview }`);
       return `
       <li class="gallery__item">
         <a class="gallery__link"
@@ -91,68 +88,61 @@ function createGallerySet(galleryItems) {
     }).join('');
 };
 
-galleryNode.insertAdjacentHTML('beforeend', gallerySet);
-
-//не забыть убрать буллиты
-
+galleryNode.insertAdjacentHTML('afterbegin', gallerySet);
 
 /*=======Реализация делегирования на галерее ul.js-gallery 
 ===============и получение url большого изображения.=====*/
 
-galleryNode.addEventListener('click', onGalleryItemClick);
+const modalNode = document.querySelector('.lightbox');
+const ovrlImageNode = document.querySelector('.lightbox__image');
 
-function onGalleryItemClick(event) {
-//
-// //делегирование на галерее ul.js-gallery
-//   
+galleryNode.addEventListener('click', onClickModalOpen);
 
-// //тут какая-то проверка на правильность, типа
-//   const isOriginalUrl = event.target.classList.contains('что здесь, original?');
-//   if (!isOriginalUrl) {
-//     return;
-//   }
-  
-// //тут получение url большого изображения.
-//   img.dataset.source="${ original }"
-  
-  
+function onClickModalOpen(event) {
+  event.preventDefault();
+  console.log(event.target);
+
 /*=======Открытие модального окна по клику на элементе галереи=====*/
-  
-  const modalNode = document.querySelector('.lightbox');
   modalNode.classList.add('is-open');
-
 /*=======Подмена значения атрибута src элемента img.lightbox\*\*image.===*/
+  ovrlImageNode.src = event.target.dataset.source;
+  ovrlImageNode.alt = event.target.alt;
 
-//   img.src=img.lightbox\*\*image.
-  
-// // тут доступ к открытому изображению
-//   const currentOpenImg = document.querySelector('lightbox.is-open');
-//   if (currentOpenImg) {
-//     currentOpenImg.classList.remove('is-open');
-//   }
-
-//   const child = event.target;
-// const parentListener = child.closest('кто здесь?')
-//   parentListener.classList.add('is-open');
+  window.addEventListener('keydown', onEscKeyPress);
 }
-
 
 /*=======Закрытие модального окна по клику на кнопку button=====*/
 
 const closeBtnRef = document.querySelector('button[data-action="close-lightbox"]');
 closeBtnRef.addEventListener('click', onClickModalClose);
+console.log(closeBtnRef);
 
 function onClickModalClose(event) {
-  
- }
-
+  modalNode.classList.remove('is-open');
 /*=====Очистка значения атрибута src элемента img.lightbox\*\*image.====*/
+  ovrlImageNode.src = '';
+  ovrlImageNode.alt = '';
 
-
+  window.removeEventListener('keydown', onEscKeyPress);
+}
 
 /*=====Закрытие модального окна по клику на div.lightbox\_\_overlay.====*/
 
+const lightboxOverlayNode = document.querySelector('.lightbox__overlay');
+lightboxOverlayNode.addEventListener('click', onClickModalClose);
+
+function onOverlayClickModalClose(event) {
+  if (event.currentTarget === event.target) {
+    onClickModalClose();
+  }
+}
+
 /*=====Закрытие модального окна по нажатию клавиши ESC.=================*/
 
-/*============Пролистывание изображений галереи в открытом модальном окне 
-==============================клавишами "влево" и "вправо".=============*/
+function onEscKeyPress(event) {
+  if (event.code === 'Escape') {
+    onClickModalClose();
+  }
+}
+
+/*===Пролистывание изображений галереи в открытом модальном окне клавишами "влево" и "вправо" не реализовано.===*/
