@@ -104,11 +104,15 @@ function onClickModalOpen(event) {
 
 /*=======Открытие модального окна по клику на элементе галереи=====*/
   modalNode.classList.add('is-open');
-/*=======Подмена значения атрибута src элемента img.lightbox\*\*image.===*/
-  ovrlImageNode.src = event.target.dataset.source;
-  ovrlImageNode.alt = event.target.alt;
+/*=======Подмена значения атрибута src элемента img.lightbox\*\*image.===*/  
+  ovrlImgSrcChange(event.target.dataset.source, event.target.alt);
 
   window.addEventListener('keydown', onEscKeyPress);
+}
+
+function ovrlImgSrcChange(scr, alt) {
+  ovrlImageNode.src = scr;
+  ovrlImageNode.alt = alt;
 }
 
 /*=======Закрытие модального окна по клику на кнопку button=====*/
@@ -120,8 +124,7 @@ console.log(closeBtnRef);
 function onClickModalClose(event) {
   modalNode.classList.remove('is-open');
 /*=====Очистка значения атрибута src элемента img.lightbox\*\*image.====*/
-  ovrlImageNode.src = '';
-  ovrlImageNode.alt = '';
+  ovrlImgSrcChange('', '');
 
   window.removeEventListener('keydown', onEscKeyPress);
 }
